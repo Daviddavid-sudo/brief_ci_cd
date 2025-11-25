@@ -1,6 +1,6 @@
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session
-from typing import List
 
 from app.database import get_db
 from app.schemas.item import ItemCreate, ItemResponse, ItemUpdate
@@ -10,7 +10,7 @@ router = APIRouter(prefix="/items", tags=["items"])
 
 MAX_ITEMS_PER_PAGE = 1000
 
-@router.get("/", response_model=List[ItemResponse])
+@router.get("/", response_model=list[ItemResponse])
 def get_items(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     """
     Récupère la liste des items avec pagination.
