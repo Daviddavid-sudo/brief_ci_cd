@@ -5,4 +5,5 @@ def test_addition():
 
 
 def test_mulitplication():
-    assert 2 * 3 == 6
+    assert 2 * 4 == 8
+
