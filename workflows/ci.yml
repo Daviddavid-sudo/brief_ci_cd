@@ -12,22 +12,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Installer uv
-      - name: Installer uv
-        run: |
-          curl -sSf https://install.astral.sh | sh
-          export PATH="$HOME/.local/bin:$PATH"
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
 
-      # Installer les dépendances
-      - name: Synchroniser les dépendances
+      - name: Install dependencies
         run: uv sync
 
-      # Exécuter ruff check
-      - name: Ruff lint
+      - name: Run Ruff lint
         run: uv run ruff check .
 
-      # Vérifier le formatage
-      - name: Vérifier le formatage
+      - name: Check formatting
         run: uv run ruff format --check .
 
   typecheck:
@@ -35,18 +32,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Installer uv
-      - name: Installer uv
-        run: |
-          curl -sSf https://install.astral.sh | sh
-          export PATH="$HOME/.local/bin:$PATH"
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
 
-      # Installer les dépendances
-      - name: Synchroniser les dépendances
+      - name: Install dependencies
         run: uv sync
 
-      # Exécuter mypy
-      - name: Vérification des types
+      - name: Mypy type checking
         run: uv run mypy app/
 
   security:
@@ -54,22 +49,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Installer uv
-      - name: Installer uv
-        run: |
-          curl -sSf https://install.astral.sh | sh
-          export PATH="$HOME/.local/bin:$PATH"
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
 
-      # Installer les dépendances
-      - name: Synchroniser les dépendances
+      - name: Install dependencies
         run: uv sync
 
-      # Bandit (analyse statique)
-      - name: Bandit
+      - name: Bandit analysis
         run: uv run bandit -r app/
 
-      # Safety (vulnérabilités dépendances)
-      - name: Safety
+      - name: Safety dependency check
         run: uv run safety check
 
   tests:
@@ -87,25 +79,23 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
+
     steps:
       - uses: actions/checkout@v4
 
-      # Installer uv
-      - name: Installer uv
-        run: |
-          curl -sSf https://install.astral.sh | sh
-          export PATH="$HOME/.local/bin:$PATH"
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
 
-      # Installer les dépendances
-      - name: Synchroniser les dépendances
+      - name: Install dependencies
         run: uv sync
 
-      # Run tests avec coverage
-      - name: Lancer les tests
+      - name: Run tests with coverage
         run: uv run pytest --cov=app --cov-report=term --cov-report=xml
 
-      # Upload coverage à Codecov (optionnel)
-      - name: Upload coverage à Codecov
+      - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
           files: coverage.xml
