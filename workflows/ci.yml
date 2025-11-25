@@ -1,0 +1,112 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Installer uv
+      - name: Installer uv
+        run: |
+          curl -sSf https://install.astral.sh | sh
+          export PATH="$HOME/.local/bin:$PATH"
+
+      # Installer les dépendances
+      - name: Synchroniser les dépendances
+        run: uv sync
+
+      # Exécuter ruff check
+      - name: Ruff lint
+        run: uv run ruff check .
+
+      # Vérifier le formatage
+      - name: Vérifier le formatage
+        run: uv run ruff format --check .
+
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Installer uv
+      - name: Installer uv
+        run: |
+          curl -sSf https://install.astral.sh | sh
+          export PATH="$HOME/.local/bin:$PATH"
+
+      # Installer les dépendances
+      - name: Synchroniser les dépendances
+        run: uv sync
+
+      # Exécuter mypy
+      - name: Vérification des types
+        run: uv run mypy app/
+
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Installer uv
+      - name: Installer uv
+        run: |
+          curl -sSf https://install.astral.sh | sh
+          export PATH="$HOME/.local/bin:$PATH"
+
+      # Installer les dépendances
+      - name: Synchroniser les dépendances
+        run: uv sync
+
+      # Bandit (analyse statique)
+      - name: Bandit
+        run: uv run bandit -r app/
+
+      # Safety (vulnérabilités dépendances)
+      - name: Safety
+        run: uv run safety check
+
+  tests:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    steps:
+      - uses: actions/checkout@v4
+
+      # Installer uv
+      - name: Installer uv
+        run: |
+          curl -sSf https://install.astral.sh | sh
+          export PATH="$HOME/.local/bin:$PATH"
+
+      # Installer les dépendances
+      - name: Synchroniser les dépendances
+        run: uv sync
+
+      # Run tests avec coverage
+      - name: Lancer les tests
+        run: uv run pytest --cov=app --cov-report=term --cov-report=xml
+
+      # Upload coverage à Codecov (optionnel)
+      - name: Upload coverage à Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: coverage.xml
+          fail_ci_if_error: true
