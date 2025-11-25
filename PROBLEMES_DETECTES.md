@@ -67,3 +67,25 @@
 
 ```bash
 docker compose exec api uv run ruff check . --fix
+
+E402 Module level import not at top of file
+ --> app/database.py:4:1
+  |
+2 | load_dotenv()
+3 |
+4 | import os
+  | ^^^^^^^^^
+5 | from sqlmodel import create_engine, Session
+  |
+
+E402 Module level import not at top of file
+ --> app/database.py:5:1
+  |
+4 | import os
+5 | from sqlmodel import create_engine, Session
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+6 |
+7 | DATABASE_URL = os.getenv("DATABASE_URL")
+  |
+
+Found 9 errors (7 fixed, 2 remaining).
