@@ -5,7 +5,9 @@ description = "CRUD API with PostgreSQL for managing items"
 requires-python = ">=3.13"
 
 dependencies = [
+    "detect-secrets>=1.5.0",
     "fastapi[standard]>=0.121.0",
+    "pre-commit>=4.4.0",
     "psycopg2-binary>=2.9.11",
     "python-dotenv>=1.2.1",
     "sqlmodel>=0.0.27",
