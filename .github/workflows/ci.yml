@@ -48,27 +48,6 @@ jobs:
           echo "ignore_missing_imports = True" >> mypy.ini
           uv run mypy app/
 
-  # security:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-
-  #     - name: Set up uv
-  #       uses: astral-sh/setup-uv@v4
-  #       with:
-  #         enable-cache: true
-  #         cache-dependency-glob: "uv.lock"
-
-  #     - name: Install dependencies
-  #       run: uv sync
-
-  #     - name: Bandit analysis
-  #       run: uv run bandit -r app/
-
-  #     - name: Safety dependency check
-  #       run: uv run safety check || true
-        # "|| true" prevents safety from failing for non-critical warnings
-
   tests:
     runs-on: ubuntu-latest
     services:
@@ -106,3 +85,10 @@ jobs:
         with:
           files: coverage.xml
           fail_ci_if_error: false
+
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+      - uses: pre-commit/action@v3.0.0
