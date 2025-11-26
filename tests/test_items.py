@@ -10,3 +10,4 @@ def test_mulitplication():
 
 def test_mulitplication2():
     assert 2 * 2 == 4
+
