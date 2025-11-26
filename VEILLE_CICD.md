@@ -248,3 +248,4 @@ Paramètres possibles :
 Le processus permet une **release entièrement automatisée**.
 
 
+test
