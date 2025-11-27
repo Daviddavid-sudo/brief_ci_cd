@@ -246,3 +246,6 @@ Paramètres possibles :
 * Ajout des fichiers nécessaires (ex : wheels, source)
 
 Le processus permet une **release entièrement automatisée**.
+
+
+test
