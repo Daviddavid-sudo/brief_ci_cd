@@ -32,7 +32,7 @@ Même si l’application tourne, les problèmes identifiés montrent des failles
 ## 2. Comment détecter ces problèmes automatiquement ?
 
 ### Outils de linting et formatage
-- **Black** : formate automatiquement le code (longues lignes, indentation, espaces).  
+- **Black** : formate automatiquement le code (longues lignes, indentation, espaces).
   ```bash
   black .
 

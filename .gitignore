@@ -33,3 +33,5 @@ coverage.xml
 # MkDocs generated docs
 site/
 docs/docsIA/
+
+.mypy_cache/
